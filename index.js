@@ -2,7 +2,7 @@
 TASK 1 🚀
 // in your own words explain what a closure is below in comments and then write an example of a closure. Try to make this explaination simple enough to explain to a younger sibling. */
 
-
+/* - Closure is the combination of a function, and the lexical enviorment which is a refrences to its surrounding state.
 
 
 
@@ -10,8 +10,11 @@ TASK 1 🚀
 /*
 TASK 2 🚀
 // look at the code below and explain in your own words where the variable 'count' is available. 
+- the variable count is availble in the counterMaker function.  
 // Explain why 'count' is initialized with a let and not a var or const. 
+- count is initialized with a let rather than a var or const in order to allow the variable "count" to be changed.
 // Explain how initalizing the variable 'count' with a var would change it's scope
+- the var statement declares a functionscoped or globally scoped variable, optionall initilizing it to a value. could become very messy!
 */
 function counterMaker() {
     let count = 0;
@@ -30,10 +33,10 @@ TASK 3 🚀
 * The for principles of "this";
 * in your own words. explain the four principle for the "this" keyword below.
 *
-* 1. 
-* 2. 
-* 3. 
-* 4. 
+* 1. Window Binding
+* 2. Implicit Binding
+* 3. Explicit Binding
+* 4. New Binding
 *
 * write out a code example of each explanation above
 */
@@ -42,13 +45,30 @@ TASK 3 🚀
 
 // code example for Window Binding
 
+/*function dog(){
+  console.log(this.bark);
+}
+const bark = 'pit';
+
+dog();
+
 // Principle 2
 
 // code example for Implicit Binding
 
+const myCat = {
+  name: 'Prince',
+  meow: 'Meow',
+  cat: function(){
+    console.log(this.meow)
+  }
+}
+myCat.cat();
 // Principle 3
 
 // code example for New Binding
+
+
 
 // Principle 4
 
@@ -76,6 +96,14 @@ TASK 4 🚀
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject(attributes){
+  this.createdAt = attributes.createdAt,
+  this.name = attributes.name,
+  this.dimensions = attributes.dimensions
+}
+  GameObject.prototype.destroy = function(){
+    return `${this.name} was removed from the game`
+  }
 
 /*
   === CharacterStats ===
@@ -83,7 +111,16 @@ TASK 4 🚀
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-
+function CharacterStats(childAttributes){
+  GameObject.call(this, childAttributes)
+  this.healthPoints = childAttributes.healthPoints
+};
+ CharacterStats.prototype = Object.create(GameObject.prototype);
+  
+ CharacterStats.prototype.takeDamage = function(){
+   return `${this.name} took damage.`
+ }
+ 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
@@ -93,7 +130,18 @@ TASK 4 🚀
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+ function Humanoid(Hattributes){
+   CharacterStats.call(this, Hattributes)
+   this.team = Hattributes.team,
+   this.weapons = Hattributes.weapons,
+   this.language = Hattributes.language
+ }
+
+ Humanoid.prototype = Object.create(CharacterStats.prototype);
  
+ Humanoid.prototype.greet = function(){
+   return `${this.name} offers a greeting in ${this.language}.`
+ }
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -102,7 +150,7 @@ TASK 4 🚀
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -160,7 +208,7 @@ TASK 4 🚀
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
 
 
